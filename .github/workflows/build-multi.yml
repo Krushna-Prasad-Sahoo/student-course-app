@@ -1,0 +1,46 @@
+name: Build Multi
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_student:
+        description: "📘 Build Student Service"
+        type: boolean
+        default: false
+      build_course:
+        description: "📗 Build Course Service"
+        type: boolean
+        default: false
+      build_enrollment:
+        description: "📙 Build Enrollment Service"
+        type: boolean
+        default: false
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Student Service build
+        if: ${{ github.event.inputs.build_student == 'true' }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-student-service.yml
+
+      - name: Trigger Course Service build
+        if: ${{ github.event.inputs.build_course == 'true' }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-course-service.yml
+
+      - name: Trigger Enrollment Service build
+        if: ${{ github.event.inputs.build_enrollment == 'true' }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-enrollment-service.yml
