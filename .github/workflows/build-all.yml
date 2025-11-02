@@ -1,0 +1,22 @@
+name: Build All Services
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger individual workflows
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-student-service.yml
+      - uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-course-service.yml
+      - uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: ${{ github.repository }}
+          workflow: build-enrollment-service.yml
